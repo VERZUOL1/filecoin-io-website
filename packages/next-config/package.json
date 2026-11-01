@@ -14,9 +14,9 @@
     "./webpackRules": "./src/webpackRules.js"
   },
   "peerDependencies": {
-    "@sentry/nextjs": "^10.46.0",
+    "@sentry/nextjs": "^11.10.0",
     "@svgr/webpack": "^8.1.0",
     "frontmatter-markdown-loader": "^3.7.0",
-    "next": "^16.2.1"
+    "next": "^16.4.3"
   }
 }
