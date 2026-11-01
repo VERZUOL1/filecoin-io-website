@@ -1,0 +1,39 @@
+UNUSED ASSETS REPORT
+===================
+
+filecoin-site:
+  public/assets/miniatures/storacha-miniature.svg
+  public/assets/miniatures/singularity-miniature.svg
+  public/assets/miniatures/ramo-miniature.svg
+  public/assets/miniatures/lighthouse-miniature.svg
+  public/assets/miniatures/filecoin-onchain-cloud-miniature.svg
+  public/assets/miniatures/fil-one-miniature.svg
+  public/assets/miniatures/cid-gravity-miniature.svg
+  public/assets/miniatures/aurora-miniature.svg
+  public/assets/miniatures/akave-miniature.svg
+  public/assets/logos/wikipedia.svg
+  public/assets/logos/swan-chain-logo.svg
+  public/assets/logos/starling-lab-logo.svg
+  public/assets/logos/smithsonian-logo.svg
+  public/assets/logos/rrm-global-logo.svg
+  public/assets/logos/reuters.svg
+  public/assets/logos/opensea.svg
+  public/assets/logos/ndlabs-logo.svg
+  public/assets/logos/internet-archive-logo.svg
+  public/assets/logos/future-tech-holdings-logo.svg
+  public/assets/logos/flickr-foundation-logo.svg
+  public/assets/logos/filecoin-logo-icon.svg
+  public/assets/logos/dcent-logo.svg
+  public/assets/logos/cidgravity-logo.svg
+  public/assets/logos/aethir-logo.svg
+  public/assets/logos/MIT-open-learning-logo.svg
+  public/assets/images/victor-chang.webp
+  public/assets/images/tech-presentation-audience-raising-hands.webp
+  public/assets/images/storacha.webp
+  public/assets/images/panel-discussion-speaker-with-microphone.webp
+  public/assets/icons/features/s3-storage.svg
+  Total: 30
+
+Total unused: 30
+Total deleted: 30
+Generated: 2026-11-01T02:10:48.864Z
