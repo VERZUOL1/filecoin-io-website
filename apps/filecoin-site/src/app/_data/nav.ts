@@ -119,6 +119,11 @@ const NETWORK: NavSection = {
             href: 'https://dashboard.starboard.ventures/',
             ref: 'nav-network-metrics',
           },
+          {
+            label: 'Security',
+            href: 'https://immunefi.com/bug-bounty/filecoin/',
+            ref: 'nav-network-security',
+          },
         ],
       },
     ],
@@ -153,11 +158,6 @@ const BUILD: NavSection = {
             ref: 'nav-build-github',
           },
           { label: 'Docs', href: DOCS, ref: 'nav-build-docs' },
-          {
-            label: 'Security',
-            href: 'https://immunefi.com/bug-bounty/filecoin/',
-            ref: 'nav-build-security',
-          },
         ],
       },
     ],
