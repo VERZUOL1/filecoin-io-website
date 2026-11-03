@@ -355,7 +355,7 @@
     "usehooks-ts": "^3.1.1",
     "viem": "^2.47.6",
     "wagmi": "^3.6.0",
-    "zod": "^4.3.6"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@filecoin-foundation/eslint-config": "0.0.0",
