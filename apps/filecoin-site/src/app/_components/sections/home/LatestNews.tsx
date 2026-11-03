@@ -1,14 +1,22 @@
 import { copy } from '@/i18n/copy'
 import type { Locale } from '@/i18n/locales'
 
+import { getLatestNews } from '@/utils/getLatestNews'
+
 /**
- * "Latest news": three posts from the filecoin.io blog. Header, spacing and type follow "Start
+ * "Latest news": the three newest posts from the locale's blog, read at build time so a new post
+ * shows here as soon as it is published. Header, spacing and type follow "Start
  * building today" above it: the intro sits close under the heading, and each card's label, title,
  * summary and date step down in size like the product cards'.
  */
-export default function LatestNews({ locale = 'en' }: { locale?: Locale }) {
+export default async function LatestNews({
+  locale = 'en',
+}: {
+  locale?: Locale
+}) {
   const { NEWS } = copy(locale).news
   const { LABELS } = copy(locale).ui
+  const articles = await getLatestNews(locale)
   return (
     <section
       id="latest-news"
@@ -27,7 +35,7 @@ export default function LatestNews({ locale = 'en' }: { locale?: Locale }) {
         </p>
 
         <ul className="mt-[clamp(2.5rem,2.236rem+1.127vw,3.25rem)] grid grid-cols-1 gap-x-[clamp(1rem,0.472rem+2.254vw,2.5rem)] gap-y-[clamp(2.5rem,2.148rem+1.502vw,3.5rem)] md:grid-cols-3">
-          {NEWS.articles.map((article) => (
+          {articles.map((article) => (
             <li key={article.href} className="min-w-0">
               <article className="h-full">
                 <a
@@ -38,7 +46,10 @@ export default function LatestNews({ locale = 'en' }: { locale?: Locale }) {
                   {/* The cover is decorative; the title names the link. Posts without one use the shared fallback art. */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={article.image ?? '/assets/images/image-fallback.120ac424.webp'}
+                    src={
+                      article.image ??
+                      '/assets/images/image-fallback.120ac424.webp'
+                    }
                     alt=""
                     width={1920}
                     height={1080}
