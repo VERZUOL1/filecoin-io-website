@@ -45,7 +45,8 @@ is a full page load.
   `PillLink`, `SiteLink`, `CopyButton`, `Reveal`, `Odometer`.
 - `src/app/_data/` – every piece of copy, by page: `home.ts`, `pricing.ts`,
   `provide-storage.ts`, `provider-form.ts`, `contact.ts`, `products/*.ts`, plus
-  `nav.ts` (header menus), `footer.ts`, `news.ts` (Latest news posts), `ui.ts`
+  `nav.ts` (header menus), `footer.ts`, `news.ts` (Latest news copy; the posts
+  are the blog's newest, via `_utils/getLatestNews.ts`), `ui.ts`
   (interface text) and `links.ts` (destinations shared across pages). `seo.ts`
   gives each page's title and description, the source of its metadata,
   structured data and Cypress checks.
