@@ -2,6 +2,8 @@
 title: 'ProPGF Batch 3: Call for Builders'
 excerpt: 'Filecoin''s FIL-ProPGF Batch 3 offers grants for teams building customer-facing products, SP growth tools, AI infra, and more. '
 share_image: /uploads/FIL-ProPGF.webp
+image:
+  url: /uploads/FIL-ProPGF.webp
 author: ProPGF Team
 date: 2026-06-07T19:21:29.268Z
 categories:
