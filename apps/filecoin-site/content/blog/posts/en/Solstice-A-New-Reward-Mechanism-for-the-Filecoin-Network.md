@@ -1,6 +1,9 @@
 ---
 title: 'Solstice: A New Reward Mechanism for the Filecoin Network'
 excerpt: 'With Solstice, Filecoin begins an important transition: from building storage capacity to helping businesses turn that capacity into services customers choose to pay for.'
+share_image: /uploads/blog-solstice-reward-mechanism.webp
+image:
+  url: /uploads/blog-solstice-reward-mechanism.webp
 date: 2026-10-19T19:00:19.439Z
 categories:
   - updates
