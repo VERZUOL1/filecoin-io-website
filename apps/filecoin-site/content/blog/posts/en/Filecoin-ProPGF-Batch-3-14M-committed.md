@@ -2,6 +2,8 @@
 title: 'Filecoin ProPGF Batch 3: ~$1.4M committed'
 excerpt: The Protocol Labs Filecoin Impact Fund (PLFIF) is pleased to announce the results of Filecoin Public Goods Funding (ProPGF) Batch 3
 share_image: /uploads/FIL-ProPGF.webp
+image:
+  url: /uploads/FIL-ProPGF.webp
 author: ProPGF Team
 date: 2026-08-19T16:12:10.959Z
 categories:
