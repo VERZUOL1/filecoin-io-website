@@ -1,0 +1,97 @@
+name: Slack Notifications
+
+# Posts significant repo activity to #filecoin-io-github (Filecoin Slack).
+# Requires the SLACK_WEBHOOK_URL repo secret (a Slack Incoming Webhook for that
+# channel). Without it, the job exits cleanly and posts nothing.
+#
+# Event text is read from the payload file with jq, never interpolated into the
+# script, so a title or body containing quotes or shell syntax can't break or run.
+
+on:
+  issues:
+    types: [opened, closed, reopened]
+  # pull_request_target so PRs from forks are announced too. Safe here: this job
+  # never checks out or runs PR code; it only reads the event payload.
+  pull_request_target:
+    types: [opened, ready_for_review, closed]
+  release:
+    types: [published]
+  workflow_run:
+    workflows:
+      - Site Cypress and Percy Tests
+      - Site Link Checker
+      - Editorial quality
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    if: >-
+      (github.event_name == 'issues' &&
+        !(github.event.action == 'opened' && contains(github.event.issue.labels.*.name, 'from-slack'))) ||
+      (github.event_name == 'pull_request_target' &&
+        github.event.pull_request.user.login != 'dependabot[bot]' &&
+        !(github.event.action == 'opened' && github.event.pull_request.draft)) ||
+      github.event_name == 'release' ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure' &&
+        github.event.workflow_run.event == 'push')
+    steps:
+      - name: Post to Slack
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SLACK_WEBHOOK_URL:-}" ]; then
+            echo "SLACK_WEBHOOK_URL is not set; skipping."
+            exit 0
+          fi
+
+          PAYLOAD=$(jq -c --arg ev "$GITHUB_EVENT_NAME" '
+            def esc: gsub("&"; "&amp;") | gsub("<"; "&lt;") | gsub(">"; "&gt;");
+            def link($u; $t): "<\($u)|\($t | esc)>";
+            # Drop HTML comments and template headings, collapse whitespace, cap length.
+            def excerpt: (. // "") | gsub("<!--[\\s\\S]*?-->"; "") | gsub("(^|\n)#+[^\n]*"; " ")
+              | gsub("\\s+"; " ") | ltrimstr(" ")
+              | if length > 280 then .[0:280] + "…" else . end | esc;
+            def labels($l): ($l // []) | map(.name) | if length > 0 then "  `" + join("` `") + "`" else "" end;
+
+            if $ev == "issues" then
+              .issue as $i
+              | if .action == "opened" then
+                  ":large_green_circle: *New issue* \(link($i.html_url; "#\($i.number) \($i.title)")) by \($i.user.login)\(labels($i.labels))"
+                  + (($i.body | excerpt) as $b | if $b != "" then "\n>\($b)" else "" end)
+                elif .action == "closed" then
+                  (if $i.state_reason == "not_planned" then ":no_entry_sign: *Issue closed (not planned)*" else ":white_check_mark: *Issue closed*" end)
+                  + " \(link($i.html_url; "#\($i.number) \($i.title)")) by \(.sender.login)"
+                else
+                  ":recycle: *Issue reopened* \(link($i.html_url; "#\($i.number) \($i.title)")) by \(.sender.login)"
+                end
+            elif $ev == "pull_request_target" then
+              .pull_request as $p
+              | if .action == "closed" and $p.merged then
+                  ":rocket: *PR merged* \(link($p.html_url; "#\($p.number) \($p.title)")) by \($p.merged_by.login // .sender.login)"
+                elif .action == "closed" then
+                  ":x: *PR closed without merge* \(link($p.html_url; "#\($p.number) \($p.title)"))"
+                else
+                  ":twisted_rightwards_arrows: *PR ready for review* \(link($p.html_url; "#\($p.number) \($p.title)")) by \($p.user.login)"
+                  + "  (+\($p.additions // 0)/−\($p.deletions // 0), \($p.changed_files // 0) files)\(labels($p.labels))"
+                end
+            elif $ev == "release" then
+              ":package: *Release published* \(link(.release.html_url; .release.name // .release.tag_name))"
+            elif $ev == "workflow_run" then
+              .workflow_run as $w
+              | ":rotating_light: *main is failing:* \(link($w.html_url; $w.name)) on `\($w.head_sha[0:7])` (\(($w.head_commit.message // "") | split("\n")[0] | esc))"
+            else empty end
+            | {text: ., unfurl_links: false, unfurl_media: false}
+          ' "$GITHUB_EVENT_PATH")
+
+          if [ -z "$PAYLOAD" ]; then
+            echo "Nothing to post for this event."
+            exit 0
+          fi
+
+          curl -fsS -X POST -H 'Content-Type: application/json' --data "$PAYLOAD" "$SLACK_WEBHOOK_URL"
