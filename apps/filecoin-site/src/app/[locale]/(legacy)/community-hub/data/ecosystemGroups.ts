@@ -48,7 +48,7 @@ export function getEcosystemGroups(t: TranslationFunction) {
         bgColor: '#fff',
       },
       cta: {
-        href: 'https://directory.plnetwork.io/teams/clz1ls1gr0003xl02n5lpvbhn',
+        href: 'https://os.pl.xyz/teams/clz1ls1gr0003xl02n5lpvbhn',
         text: t('ecosystemGroups.visitWebsite'),
       },
     },
